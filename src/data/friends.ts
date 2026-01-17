@@ -12,6 +12,25 @@ export interface FriendItem {
 
 // 友情链接数据
 export const friendsData: FriendItem[] = [
+	
+	
+	{
+		id: 9900,
+		title: "毕少侠",
+		imgurl: "/assets/imgs/logo.webp",
+		desc: "个人博客Power by Hugo",
+		siteurl: "https://geekswg.js.cool",
+		tags: ["blog"],
+	},
+	{
+		id: 9901,
+		title: "主页",
+		imgurl: "/assets/imgs/logo.webp",
+		desc: "我的个人主页",
+		siteurl: "https://342901.xyz",
+		tags: ["blog"],
+	},
+
 	{
 		id: 1,
 		title: "Astro",

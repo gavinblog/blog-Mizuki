@@ -20,6 +20,13 @@ const diaryData: DiaryItem[] = [
 		date: "2025-01-15T10:30:00Z",
 		images: ["/images/diary/sakura.jpg", "/images/diary/1.jpg"],
 	},
+	{
+		id: 2,
+		content:
+			"青春人依旧，只叹时光太匆匆！",
+		date: "2026-01-17",
+		images: ["/assets/imgs/logo.webp", "/assets/imgs/QRcode-alipay.webp", "/assets/imgs/QRcode-wechat.webp"],
+	},
 ];
 
 // 获取日记统计数据

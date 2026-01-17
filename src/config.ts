@@ -100,20 +100,32 @@ export const siteConfig: SiteConfig = {
 		// 支持单张图片或图片数组，当数组长度 > 1 时自动启用轮播
 		src: {
 			desktop: [
-				"/assets/desktop-banner/1.webp",
-				"/assets/desktop-banner/2.webp",
-				"/assets/desktop-banner/3.webp",
-				"/assets/desktop-banner/4.webp",
-				"/assets/desktop-banner/5.webp",
-				"/assets/desktop-banner/6.webp",
+				"/assets/imgs/home/wallhaven-0.webp",
+				"/assets/imgs/home/wallhaven-1.webp",
+				"/assets/imgs/home/wallhaven-2.webp",
+				"/assets/imgs/home/wallhaven-3.webp",
+				"/assets/imgs/home/wallhaven-4.webp",
+				"/assets/imgs/home/wallhaven-5.webp",
+				"/assets/imgs/home/wallhaven-6.webp",
+				"/assets/imgs/home/wallhaven-7.webp",
+				"/assets/imgs/home/wallhaven-8.webp",
 			], // 桌面横幅图片
 			mobile: [
-				"/assets/mobile-banner/1.webp",
-				"/assets/mobile-banner/2.webp",
-				"/assets/mobile-banner/3.webp",
-				"/assets/mobile-banner/4.webp",
-				"/assets/mobile-banner/5.webp",
-				"/assets/mobile-banner/6.webp",
+				"/assets/imgs/home/wallhaven-0.webp",
+				"/assets/imgs/home/wallhaven-1.webp",
+				"/assets/imgs/home/wallhaven-2.webp",
+				"/assets/imgs/home/wallhaven-3.webp",
+				"/assets/imgs/home/wallhaven-4.webp",
+				"/assets/imgs/home/wallhaven-5.webp",
+				"/assets/imgs/home/wallhaven-6.webp",
+				"/assets/imgs/home/wallhaven-7.webp",
+				"/assets/imgs/home/wallhaven-8.webp",
+				// "/assets/mobile-banner/1.webp",
+				// "/assets/mobile-banner/2.webp",
+				// "/assets/mobile-banner/3.webp",
+				// "/assets/mobile-banner/4.webp",
+				// "/assets/mobile-banner/5.webp",
+				// "/assets/mobile-banner/6.webp",
 			], // 移动横幅图片
 		}, // 使用本地横幅图片
 
@@ -144,11 +156,12 @@ export const siteConfig: SiteConfig = {
 			title: "但行好事，莫问前程", // 主页横幅主标题
 
 			subtitle: [
-				"君不见黄河之水天上来，奔流到海不复回",
-				"君不见高堂明镜悲白发，朝如青丝暮成雪",
-				"人生得意须尽欢，莫使金樽空对月",
-				"天生我材必有用，千金散尽还复来",
-				"烹羊宰牛且为乐，会须一饮三百杯。",
+				"莫笑少年江湖梦，谁不少年梦江湖。",
+				"曾经年少立志三千里，如今踌躇百步无寸功。",
+				"懵懂半生，庸碌尘世中，转眼高堂皆白发，儿女蹒跚学堂中。",
+				"碎银几两催人老。",
+				"心仍少，皱纹却上眉目中，浮生醉酒回梦里。",
+				"青春人依旧，只叹时光太匆匆！"
 			],
 			typewriter: {
 				enable: true, // 启用副标题打字机效果
@@ -173,7 +186,7 @@ export const siteConfig: SiteConfig = {
 	toc: {
 		enable: true, // 启用目录功能
 		mode: "sidebar", // 目录显示模式："float" 悬浮按钮模式，"sidebar" 侧边栏模式
-		depth: 2, // 目录深度，1-6，1 表示只显示 h1 标题，2 表示显示 h1 和 h2 标题，依此类推
+		depth: 3, // 目录深度，1-6，1 表示只显示 h1 标题，2 表示显示 h1 和 h2 标题，依此类推
 		useJapaneseBadge: false, // 使用日语假名标记（あいうえお...）代替数字，开启后会将 1、2、3... 改为 あ、い、う...
 	},
 	showCoverInContent: true, // 在文章内容页显示文章封面
@@ -416,9 +429,11 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 };
 
 export const commentConfig: CommentConfig = {
-	enable: false, // 启用评论功能。当设置为 false 时，评论组件将不会显示在文章区域。
+	enable: true, // 启用评论功能。当设置为 false 时，评论组件将不会显示在文章区域。
 	twikoo: {
-		envId: "https://twikoo.vercel.app",
+		//数据库 https://cloud.mongodb.com/v2/63fa7751bdbbce235b38243a#/clusters
+		// vercel-twikoo https://vercel.com/geekswgs-projects/blog-twikoo
+		envId: "https://twikoo.342901.xyz/",
 		lang: SITE_LANG,
 	},
 };
@@ -611,16 +626,16 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 };
 
 export const sakuraConfig: SakuraConfig = {
-	enable: true, // 默认关闭樱花特效
-	sakuraNum: 21, // 樱花数量
+	enable: false, // 默认关闭樱花特效
+	sakuraNum: 16, // 樱花数量
 	limitTimes: -1, // 樱花越界限制次数，-1为无限循环
 	size: {
 		min: 0.5, // 樱花最小尺寸倍数
 		max: 1.1, // 樱花最大尺寸倍数
 	},
 	opacity: {
-		min: 0.3, // 樱花最小不透明度
-		max: 0.9, // 樱花最大不透明度
+		min: 0.2, // 樱花最小不透明度
+		max: 0.6, // 樱花最大不透明度
 	},
 	speed: {
 		horizontal: {

@@ -2,9 +2,12 @@
 title: 我的第一篇Astro博客
 description: 这是我的第一篇使用 Astro 创建的博客文章。
 published: 2026-01-01
-categories: [astro]
 author: geekswg
+category: astro
 tags: [astro,demo]
+
+# 封面
+#image: /assets/imgs/home/wallhaven-0.webp
 ---
 
 欢迎来到我的第一篇博客文章！这是我使用 Astro 框架创建的博客，希望你喜欢阅读它。
