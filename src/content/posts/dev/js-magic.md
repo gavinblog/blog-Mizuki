@@ -5,7 +5,7 @@ published: 2026-01-19T18:51:00+08:00
 
 keywords: ["js","javascript","geekswg","毕少侠"]
 tags: ["js","javascript"]
-categories: ["dev"]
+category: "dev"
 ---
 
 ## 游动的小鱼
