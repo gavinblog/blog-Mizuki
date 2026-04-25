@@ -1,4 +1,4 @@
-import type {
+﻿import type {
 	AnnouncementConfig,
 	CommentConfig,
 	ExpressiveCodeConfig,
@@ -9,6 +9,8 @@ import type {
 	NavBarConfig,
 	PermalinkConfig,
 	ProfileConfig,
+	RandomPostsConfig,
+	RelatedPostsConfig,
 	SakuraConfig,
 	ShareConfig,
 	SidebarLayoutConfig,
@@ -32,11 +34,11 @@ export const siteConfig: SiteConfig = {
 	lang: SITE_LANG,
 
 	themeColor: {
-		hue: 230, // 主题色的默认色相，范围从 0 到 360。例如：红色：0，青色：200，蓝绿色：250，粉色：345
+		hue: 240, // 主题色的默认色相，范围从 0 到 360。例如：红色：0，青色：200，蓝绿色：250，粉色：345
 		fixed: false, // 对访问者隐藏主题色选择器
 	},
 
-	// 特色页面开关配置(关闭不在使用的页面有助于提升SEO,关闭后直接在顶部导航删除对应的页面就行)
+	// 特色页面开关配置（关闭未使用的页面有助于提升 SEO，关闭后请记得在 navbarConfig 中移除对应链接）
 	featurePages: {
 		anime: true, // 番剧页面开关
 		diary: true, // 日记页面开关
@@ -51,7 +53,7 @@ export const siteConfig: SiteConfig = {
 	// 顶栏标题配置
 	navbarTitle: {
 		// 显示模式："text-icon" 显示图标+文本，"logo" 仅显示Logo
-		mode: "logo",
+		mode: "text-icon",
 		// 顶栏标题文本
 		text: "毕少侠",
 		// 顶栏标题图标路径，默认使用 public/assets/home/home.png
@@ -60,13 +62,32 @@ export const siteConfig: SiteConfig = {
 		logo: "assets/imgs/logo.webp",
 	},
 
+	// 页面自动缩放配置
+	pageScaling: {
+		enable: true, // 是否开启自动缩放
+		targetWidth: 2000, // 目标宽度，低于此宽度时开始缩放
+	},
+
 	bangumi: {
 		userId: "your-bangumi-id", // 在此处设置你的Bangumi用户ID，可以设置为 "sai" 测试
 		fetchOnDev: false, // 是否在开发环境下获取 Bangumi 数据（默认 false），获取前先执行 pnpm build 构建 json 文件
 	},
 
+	bilibili: {
+		vmid: "your-bilibili-vmid", // 在此处设置你的Bilibili用户ID (uid)，例如 "1129280784"
+		fetchOnDev: false, // 是否在开发环境下获取 Bilibili 数据（默认 false）
+		coverMirror: "", // 封面图片镜像源（可选，如果需要使用镜像源，例如 "https://images.weserv.nl/?url="）
+		useWebp: true, // 是否使用WebP格式（默认 true）
+
+		// bilibili 观看进度配置说明(可选，如需配置仔细阅读):
+		// 1. 本地开发：请在 .env 文件中填写 BILI_SESSDATA=your_SESSDATA
+		// 2. 远程构建：请在 GitHub 仓库 Settings -> Secrets 中添加 BILI_SESSDATA
+		// 注意：SESSDATA 为账号凭证，为防止泄露，切记不可使用硬编码。
+		// 安全提示：如 SESSDATA 已泄露，请打开 B站手机端 —— 我的 —— 设置 —— 安全隐私 —— 登陆设备管理 —— 一键退登，销毁已泄露的账号凭证
+	},
+
 	anime: {
-		mode: "local", // 番剧页面模式："bangumi" 使用Bangumi API，"local" 使用本地配置
+		mode: "local", // 番剧页面模式："bangumi" 使用Bangumi API，"local" 使用本地配置，"bilibili" 使用Bilibili API
 	},
 
 	// 文章列表布局配置
@@ -76,6 +97,10 @@ export const siteConfig: SiteConfig = {
 		defaultMode: "list",
 		// 是否允许用户切换布局
 		allowSwitch: true,
+		// 文章列表页分类导航条配置
+		categoryBar: {
+			enable: true, // 是否在文章列表页显示分类导航条
+		},
 	},
 
 	// 标签样式配置
@@ -137,7 +162,7 @@ export const siteConfig: SiteConfig = {
 		},
 
 		waves: {
-			enable: true, // 是否启用水波纹效果(这个功能比较吃性能)
+			enable: true, // 是否启用水波纹效果（注意：此功能性能开销较大）
 			performanceMode: false, // 性能模式：减少动画复杂度(性能提升40%)
 			mobileDisable: false, // 移动端禁用
 		},
@@ -184,8 +209,10 @@ export const siteConfig: SiteConfig = {
 		},
 	},
 	toc: {
-		enable: true, // 启用目录功能
-		mode: "sidebar", // 目录显示模式："float" 悬浮按钮模式，"sidebar" 侧边栏模式
+		enable: true, // 总开关，启用目录功能
+		mobileTop: true, // 手机端顶部 TOC 按钮
+		desktopSidebar: true, // 电脑端右侧边栏 TOC
+		floating: true, // 悬浮 TOC 按钮
 		depth: 3, // 目录深度，1-6，1 表示只显示 h1 标题，2 表示显示 h1 和 h2 标题，依此类推
 		useJapaneseBadge: false, // 使用日语假名标记（あいうえお...）代替数字，开启后会将 1、2、3... 改为 あ、い、う...
 	},
@@ -216,11 +243,21 @@ export const siteConfig: SiteConfig = {
 			// 中日韩字体 - 作为回退字体
 			fontFamily: "萝莉体 第二版",
 			fontWeight: "500",
-			localFonts: ["萝莉体 第二版.ttf"],
+			localFonts: ["loli.ttf"],
 			enableCompress: true, // 启用字体子集优化，减少字体文件大小
 		},
 	},
-	showLastModified: true, // 控制“上次编辑”卡片显示的开关
+	showLastModified: true, // 控制"上次编辑"卡片显示的开关
+	pageProgressBar: {
+		enable: true, // 启用页面顶部进度条
+		height: 3, // 进度条高度 3px
+		duration: 6000, // 动画时长 6s
+	},
+
+	thirdPartyAnalytics: {
+		enable: false, // 是否启用第三方统计（Microsoft Clarity），默认关闭，启用可能影响 Lighthouse 评分
+		clarityId: "", // Clarity 项目 ID
+	},
 };
 export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
 	src: {
@@ -229,16 +266,12 @@ export const fullscreenWallpaperConfig: FullscreenWallpaperConfig = {
 			"/assets/desktop-banner/2.webp",
 			"/assets/desktop-banner/3.webp",
 			"/assets/desktop-banner/4.webp",
-			"/assets/desktop-banner/5.webp",
-			"/assets/desktop-banner/6.webp",
 		], // 桌面横幅图片
 		mobile: [
 			"/assets/mobile-banner/1.webp",
 			"/assets/mobile-banner/2.webp",
 			"/assets/mobile-banner/3.webp",
 			"/assets/mobile-banner/4.webp",
-			"/assets/mobile-banner/5.webp",
-			"/assets/mobile-banner/6.webp",
 		], // 移动横幅图片
 	}, // 使用本地横幅图片
 	position: "center", // 壁纸位置，等同于 object-position
@@ -255,7 +288,7 @@ export const navBarConfig: NavBarConfig = {
 	links: [
 		LinkPreset.Home,
 		LinkPreset.Archive,
-		// 支持自定义导航栏链接,并且支持多级菜单,3.1版本新加
+		// 支持自定义导航栏链接，支持多级菜单
 		{
 			name: "Links",
 			url: "/links/",
@@ -265,13 +298,13 @@ export const navBarConfig: NavBarConfig = {
 					name: "GitHub",
 					url: "https://github.com/geekswg",
 					external: true,
-					icon: "fa6-brands:github",
+					icon: "fa7-brands:github",
 				},
 				{
 					name: "Bilibili",
 					url: "https://space.bilibili.com/39865904",
 					external: true,
-					icon: "fa6-brands:bilibili",
+					icon: "fa7-brands:bilibili",
 				},
 				{
 					name: "Gitee",
@@ -297,13 +330,13 @@ export const navBarConfig: NavBarConfig = {
 					icon: "material-symbols:book",
 				},
 				{
-					name: "Albums",
+					name: "Gallery",
 					url: "/albums/",
 					icon: "material-symbols:photo-library",
 				},
 				{
 					name: "Devices",
-					url: "devices/",
+					url: "/devices/",
 					icon: "material-symbols:devices",
 					external: false,
 				},
@@ -362,7 +395,7 @@ export const profileConfig: ProfileConfig = {
 	links: [
 		{
 			name: "Bilibli",
-			icon: "fa6-brands:bilibili",
+			icon: "fa7-brands:bilibili",
 			url: "https://space.bilibili.com/39865904",
 		},
 		{
@@ -372,7 +405,7 @@ export const profileConfig: ProfileConfig = {
 		},
 		{
 			name: "GitHub",
-			icon: "fa6-brands:github",
+			icon: "fa7-brands:github",
 			url: "https://github.com/geekswg",
 		},
 		{
@@ -382,7 +415,7 @@ export const profileConfig: ProfileConfig = {
 		},
 		{
 			name: "Discord",
-			icon: "fa6-brands:discord",
+			icon: "fa7-brands:discord",
 			url: "https://discord.gg/geekswg",
 		},
 	],
@@ -407,15 +440,17 @@ export const permalinkConfig: PermalinkConfig = {
 	 * - %minute% : 2位分钟 (00-59)
 	 * - %second% : 2位秒数 (00-59)
 	 * - %post_id% : 文章序号（按发布时间升序排列，最早的文章为1）
-	 * - %postname% : 文章文件名（slug）
+	 * - %postname% : 文章文件名（slug，通常为全小写）
+	 * - %raw_postname% : 文章原始文件名（保留大小写）
 	 * - %category% : 分类名（无分类时为 "uncategorized"）
 	 *
 	 * 示例：
 	 * - "%year%-%monthnum%-%postname%" => "/2024-12-my-post/"
 	 * - "%post_id%-%postname%" => "/42-my-post/"
 	 * - "%category%-%postname%" => "/tech-my-post/"
+	 * - "%year%/%monthnum%/%day%/%postname%" => "/2024/12/01/my-post/"
 	 *
-	 * 注意：不支持斜杠 "/"，所有生成的链接都在根目录下
+	 * 注意：支持使用斜杠 "/" 构建嵌套路径。
 	 */
 	format: "%postname%", // 默认使用文件名
 };
@@ -430,11 +465,26 @@ export const expressiveCodeConfig: ExpressiveCodeConfig = {
 
 export const commentConfig: CommentConfig = {
 	enable: true, // 启用评论功能。当设置为 false 时，评论组件将不会显示在文章区域。
+	system: "twikoo", // 评论系统选择: "twikoo" | "giscus"
 	twikoo: {
 		//数据库 https://cloud.mongodb.com/v2/63fa7751bdbbce235b38243a#/clusters
 		// vercel-twikoo https://vercel.com/geekswgs-projects/blog-twikoo
 		envId: "https://twikoo.342901.xyz/",
 		lang: SITE_LANG,
+	},
+	giscus: {
+		repo: "your-github-username/your-repo-name",
+		repoId: "your-repo-id",
+		category: "Announcements",
+		categoryId: "your-category-id",
+		mapping: "pathname",
+		strict: "0",
+		reactionsEnabled: "1",
+		emitMetadata: "0",
+		inputPosition: "top",
+		theme: "preferred_color_scheme",
+		lang: SITE_LANG,
+		loading: "lazy",
 	},
 };
 
@@ -443,8 +493,8 @@ export const shareConfig: ShareConfig = {
 };
 
 export const announcementConfig: AnnouncementConfig = {
-	title: "Announcement", // 公告标题
-	content: "Welcome to my blog! This is a sample announcement.", // 公告内容
+	title: "", // 公告标题，填空使用i18n字符串Key.announcement
+	content: "ブログへようこそ！これはサンプルの告知です", // 公告内容
 	closable: true, // 允许用户关闭公告
 	link: {
 		enable: true, // 启用链接
@@ -456,7 +506,9 @@ export const announcementConfig: AnnouncementConfig = {
 
 export const musicPlayerConfig: MusicPlayerConfig = {
 	enable: true, // 启用音乐播放器功能
-	mode: "meting", // 音乐播放器模式，可选 "local" 或 "meting"
+	showFloatingPlayer: true, // 显示悬浮播放器 UI
+	floatingEntryMode: "fab", // 悬浮入口模式："default" 为独立悬浮播放器，"fab" 为集成到通用 FAB 组
+	mode: "local", // 音乐播放器模式，可选 "local" 或 "meting"
 	meting_api:
 		"https://www.bilibili.uno/api?server=:server&type=:type&id=:id&auth=:auth&r=:r", // Meting API 地址
 	id: "12832453222", // 歌单ID
@@ -475,25 +527,16 @@ export const footerConfig: FooterConfig = {
 /**
  * 侧边栏布局配置
  * 用于控制侧边栏组件的显示、排序、动画和响应式行为
- * sidebar: 控制组件在左侧栏和右侧栏,注意移动端是不会显示右侧栏的内容(unilateral模式除外),在设置了right属性的时候请确保你使用双侧(both)布局
+ * sidebar: 控制组件所在的侧边栏（left 或 right）。注意：移动端通常不显示右侧栏内容。若组件设置在 right，请确保 layout.position 为 "both"。
  */
 export const sidebarLayoutConfig: SidebarLayoutConfig = {
-	// 侧边栏位置：单侧(unilateral)或双侧(both)
-	position: "both",
-
-	// 侧边栏组件配置列表
-	components: [
+	// 侧边栏组件属性配置列表
+	properties: [
 		{
 			// 组件类型：用户资料组件
 			type: "profile",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序（数字越小越靠前）
-			order: 1,
 			// 组件位置："top" 表示固定在顶部
 			position: "top",
-			// 所在侧边栏
-			sidebar: "left",
 			// CSS 类名，用于应用样式和动画
 			class: "onload-animation",
 			// 动画延迟时间（毫秒），用于错开动画效果
@@ -502,30 +545,25 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：公告组件
 			type: "announcement",
-			// 是否启用该组件（现在通过统一配置控制）
-			enable: true,
-			// 组件显示顺序
-			order: 2,
 			// 组件位置："top" 表示固定在顶部
 			position: "top",
-			// 所在侧边栏
-			sidebar: "left",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
 			animationDelay: 50,
 		},
 		{
+			// 组件类型：侧栏音乐组件
+			type: "music-sidebar",
+			position: "sticky",
+			class: "onload-animation",
+			animationDelay: 100,
+		},
+		{
 			// 组件类型：分类组件
 			type: "categories",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序
-			order: 3,
 			// 组件位置："sticky" 表示粘性定位，可滚动
 			position: "sticky",
-			// 所在侧边栏
-			sidebar: "left",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -539,14 +577,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：标签组件
 			type: "tags",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序
-			order: 5,
 			// 组件位置："sticky" 表示粘性定位
 			position: "top",
-			// 所在侧边栏
-			sidebar: "left",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -558,16 +590,20 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			},
 		},
 		{
+			// 组件类型：卡片式目录组件
+			type: "card-toc",
+			// 组件位置
+			position: "sticky",
+			// CSS 类名
+			class: "onload-animation",
+			// 动画延迟时间
+			animationDelay: 200,
+		},
+		{
 			// 组件类型：站点统计组件
 			type: "site-stats",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序
-			order: 5,
 			// 组件位置
 			position: "top",
-			// 所在侧边栏
-			sidebar: "right",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
@@ -576,20 +612,27 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 		{
 			// 组件类型：日历组件(移动端不显示)
 			type: "calendar",
-			// 是否启用该组件
-			enable: true,
-			// 组件显示顺序
-			order: 6,
 			// 组件位置
 			position: "top",
-			// 所在侧边栏
-			sidebar: "right",
 			// CSS 类名
 			class: "onload-animation",
 			// 动画延迟时间
 			animationDelay: 250,
 		},
 	],
+
+	// 侧栏组件布局配置
+	components: {
+		left: ["profile", "announcement", "tags", "card-toc"],
+		right: ["site-stats", "calendar", "categories", "music-sidebar"],
+		drawer: [
+			"profile",
+			"announcement",
+			"music-sidebar",
+			"categories",
+			"tags",
+		],
+	},
 
 	// 默认动画配置
 	defaultAnimation: {
@@ -609,18 +652,8 @@ export const sidebarLayoutConfig: SidebarLayoutConfig = {
 			mobile: 768,
 			// 平板端断点：屏幕宽度小于1280px
 			tablet: 1280,
-			// 桌面端断点：屏幕宽度小于1280px
+			// 桌面端断点：屏幕宽度大于等于1280px
 			desktop: 1280,
-		},
-		// 不同设备的布局模式
-		//hidden:不显示侧边栏(桌面端)   drawer:抽屉模式(移动端不显示)   sidebar:显示侧边栏
-		layout: {
-			// 移动端：抽屉模式
-			mobile: "sidebar",
-			// 平板端：显示侧边栏
-			tablet: "sidebar",
-			// 桌面端：显示侧边栏
-			desktop: "sidebar",
 		},
 	},
 };
@@ -654,9 +687,9 @@ export const sakuraConfig: SakuraConfig = {
 
 // Pio 看板娘配置
 export const pioConfig: import("./types/config").PioConfig = {
-	enable: true, // 启用看板娘
+	enable: false, // 禁用看板娘以提升性能
 	models: ["/pio/models/pio/model.json"], // 默认模型路径
-	position: "left", // 默认位置在右侧
+	position: "left", // 模型位置
 	width: 280, // 默认宽度
 	height: 250, // 默认高度
 	mode: "draggable", // 默认为可拖拽模式
@@ -672,8 +705,20 @@ export const pioConfig: import("./types/config").PioConfig = {
 		home: "Click here to go back to homepage!", // 首页提示
 		skin: ["Want to see my new outfit?", "The new outfit looks great~"], // 换装提示
 		close: "QWQ See you next time~", // 关闭提示
-		link: "https://github.com/matsuzaka-yuki/Mizuki", // 关于链接
+		link: "https://github.com/LyraVoid/Mizuki", // 关于链接
 	},
+};
+
+// 相关文章配置
+export const relatedPostsConfig: RelatedPostsConfig = {
+	enable: true,
+	maxCount: 5,
+};
+
+// 随机文章配置
+export const randomPostsConfig: RandomPostsConfig = {
+	enable: true,
+	maxCount: 5,
 };
 
 // 导出所有配置的统一接口
@@ -684,13 +729,15 @@ export const widgetConfigs = {
 	layout: sidebarLayoutConfig,
 	sakura: sakuraConfig,
 	fullscreenWallpaper: fullscreenWallpaperConfig,
-	pio: pioConfig, // 添加 pio 配置
-	share: shareConfig, // 添加分享配置
+	pio: pioConfig,
+	share: shareConfig,
+	relatedPosts: relatedPostsConfig,
+	randomPosts: randomPostsConfig,
 } as const;
 
 export const umamiConfig = {
 	enabled: true, // 是否显示Umami统计
-	apiKey: import.meta.env.UMAMI_API_KEY || "r9ItpwPQbidvQntHkIrolXKpsq1PYweN", // API密钥优先从环境变量读取，否则使用配置文件中的值
+	apiKey: "r9ItpwPQbidvQntHkIrolXKpsq1PYweN", // API密钥
 	baseUrl: "https://api.umami.is", // Umami Cloud API地址
 	scripts: `
 <script defer src="https://cloud.umami.is/script.js" data-website-id="41eeb589-5067-4095-80ef-8be743e3a6fc"></script>
